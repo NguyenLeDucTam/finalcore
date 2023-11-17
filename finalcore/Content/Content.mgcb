@@ -13,12 +13,24 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin a_5Y4GyBqs.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:a_5Y4GyBqs.wav
+
 #begin default.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:default.spritefont
+
+#begin Guns- Artillery Sound EffectMexian Tech Vlog-[AudioTrimmer (mp3cut.net).wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Guns- Artillery Sound EffectMexian Tech Vlog-[AudioTrimmer (mp3cut.net).wav
 
 #begin icons8-bullet-24.png
 /importer:TextureImporter
@@ -37,4 +49,16 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:pew-sound-effect_xRLQEfgl.wav
+
+#begin Smoke45Frames.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,255,255,255
+/processorParam:ColorKeyEnabled=False
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Smoke45Frames.png
 
