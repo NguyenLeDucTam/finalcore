@@ -28,13 +28,12 @@ namespace finalcore
         private Rectangle[] sourceRectangles;
         private int frameWidth;
         private int frameHeight;
-        TimeSpan animationInterval = TimeSpan.FromMilliseconds(100);
+        TimeSpan animationInterval = TimeSpan.FromMilliseconds(50);
         TimeSpan lastFrameChangeTime;
-        int currentFrame=42;
+        int currentFrame=49;
         private bool stop=true;
         private bool passed = false;
         private SoundEffect exp;
-        private bool playitonce=true;
         public Flak(Game game, SpriteBatch spriteBatch, SpriteFont defont, Vector2 position, int speed
             , Texture2D tex,Texture2D explosionSheet, Vector2 defpoint, GraphicsDeviceManager graphic
             ,SoundEffect exp) : base(game)
@@ -49,7 +48,7 @@ namespace finalcore
             this.graphic = graphic;
             this.explosionSheet = explosionSheet;
             this.exp = exp;
-
+            //6.73
         }
         public override void Initialize()
         {
@@ -80,19 +79,9 @@ namespace finalcore
             spriteBatch.Begin();
             Rectangle bullet = new Rectangle((int)defpoint.X,(int)defpoint.Y,1,1);
             Rectangle target = new Rectangle((int)(position.X-25), (int)(position.Y-25), 50,50);
-            /*Debug.WriteLine(bullet);
-            Debug.WriteLine(target);*/
-/*            if (bullet.Intersects(target))
+            if (bullet.Intersects(target) ==false && passed==false && defpoint != stage)
             {
-                Debug.WriteLine("delayed");
-                playitonce = false;
-                exp.Play();
-            }*/
-            if (bullet.Intersects(target) ==false && passed==false)
-            {
-                /*Debug.WriteLine("fied");*/
-                
-                spriteBatch.Draw(tex, defpoint, null, Color.White, rotate, new Vector2(0, 0), 1.5f, SpriteEffects.None, 0);
+                spriteBatch.Draw(tex, new Vector2( defpoint.X,defpoint.Y), null, Color.White, rotate, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0);
             }
             
             else if (bullet.Intersects(target))
@@ -126,7 +115,7 @@ namespace finalcore
 
                 if (currentFrame == 0)
                 {
-                    currentFrame = 42;
+                    currentFrame = 49;
                     stop = false;
                     
                 }
