@@ -21,7 +21,11 @@ namespace finalcore
         private Bullet bullet;
         private Vector2 defpoint;
         private Texture2D bulletTex;
-        private double fireRate = 0.1;
+        private double fireRate = 0.5;
+        private double bulletFR = 0.1;
+        private double flakFR = 0.5;
+        private double mortarFR = 2;
+        private double shotgunFR = 1;
         private int speedBullet;
         private int speed=2000;
         private int speedFlak;
@@ -46,6 +50,8 @@ namespace finalcore
         private Shotgun shotgun;
         private Texture2D shotgunBarrel;
         private Texture2D shotgunBullet;
+        private SoundEffect shotgunShot;
+        private SoundEffect shotgunCock;
 
         public Game1()
         {
@@ -84,6 +90,8 @@ namespace finalcore
             mortarTex = this.Content.Load<Texture2D>("artillery-icon-22");
             Flak = this.Content.Load<SoundEffect>("Guns- Artillery Sound EffectMexian Tech Vlog-[AudioTrimmer (mp3cut.net)");
             FlakExp = this.Content.Load<SoundEffect>("a_5Y4GyBqs");
+            shotgunShot = this.Content.Load<SoundEffect>("Sequence 01");
+            shotgunCock = this.Content.Load<SoundEffect>("Sequence 01_1");
             mortarFlying = this.Content.Load<SoundEffect>("RimWorld by Ludeon Studios 2023-11-17 23-03-44_2");
             mortarSound = this.Content.Load<SoundEffect>("RimWorld by Ludeon Studios 2023-11-17 23-03-44_4");
         // TODO: use this.Content to load your game content here
@@ -106,17 +114,10 @@ namespace finalcore
             double time = gameTime.TotalGameTime.TotalSeconds;
             string basetext = "base";
             Vector2 direction = new Vector2(mouseState.X-defpoint.X, mouseState.Y-defpoint.Y);
+            
             float rotate = (float)Math.Atan2(direction.Y, direction.X);
-            float lenth = (float)Math.Sqrt(shotgunBarrel.Width*shotgunBarrel.Width +
-                shotgunBarrel.Height*shotgunBarrel.Height);
-            Vector2 textureSize = new Vector2(shotgunBarrel.Width, shotgunBarrel.Height);
-            float offsetX = (float)Math.Cos(rotate) * textureSize.X;
-            float offsetY = (float)Math.Sin(rotate) * textureSize.X;
-
-            // Calculate the location of the other end of the texture
-            Vector2 otherEnd = new Vector2(defpoint.X + offsetX, defpoint.Y + offsetY);
-            Vector2 afterDef = new Vector2(defpoint.X + (float)Math.Cos(rotate) * lenth,
-                (float)Math.Abs(defpoint.Y + (float)Math.Sin(rotate) * lenth));
+            direction.Normalize();
+            Vector2 barrelTip = new Vector2(defpoint.X + shotgunBarrel.Width*direction.X*0.07f, defpoint.Y + shotgunBarrel.Width * direction.Y * 0.07f);
             GraphicsDevice.Clear(Color.DarkGray);
             _spriteBatch.Begin();
             
@@ -138,7 +139,7 @@ namespace finalcore
                 {
                     bullet = new Bullet(this, _spriteBatch, defont, new Vector2(mouseState.X, mouseState.Y), speed, bulletTex, defpoint, _graphics, gravity);
                     this.Components.Add(bullet);
-                    pasTime = time + fireRate;
+                    pasTime = time + bulletFR;
                     pew.Play(volume: 0.3f, pitch: 0.0f, pan: 0.0f);
 
                 }
@@ -147,8 +148,8 @@ namespace finalcore
                     flak = new Flak(this, _spriteBatch, defont, new Vector2(mouseState.X, mouseState.Y),
                         speed, flakTex, flaxExp, defpoint, _graphics, FlakExp);
                     this.Components.Add(flak);
-                    pasTime = time + fireRate;
-                    Flak.Play(volume: 0.3f, pitch: 0.0f, pan: 0.0f);
+                    pasTime = time + flakFR;
+                    Flak.Play(volume: 0.1f, pitch: 0.0f, pan: 0.0f);
                 }
                 if (weapon == 3 && pasTime < time)
                 {
@@ -163,7 +164,7 @@ namespace finalcore
                     
                     mortar = new Mortar(this, _spriteBatch, defont, new Vector2(mouseState.X, mouseState.Y), speed, mortarTex,mortarExp, defpoint, _graphics, gravity, mortarFlying,mortarSound);
                     this.Components.Add(mortar);
-                    pasTime = time + fireRate;
+                    pasTime = time + mortarFR;
                     Mortar.Play(volume: 0.3f, pitch: 0.0f, pan: 0.0f);
 
                 }
@@ -171,23 +172,30 @@ namespace finalcore
                 {
                     if ( pasTime < time )
                     {
-                        Debug.WriteLine(defpoint);
-                        Debug.WriteLine(afterDef);
-                        shotgun = new Shotgun(this, _spriteBatch, defont, new Vector2(mouseState.X, mouseState.Y), speed, shotgunBullet, defpoint, _graphics, gravity);
-                        this.Components.Add(shotgun);
-                        pasTime = time + fireRate;
+                        for (int i = 0; i < 20; i++)
+                        {
+                            shotgunCock.Play( 0.01f, 0.0f, 0.0f);
+                            shotgunShot.Play(0.01f,0.0f,0f);
+                            shotgun = new Shotgun(this, _spriteBatch, defont, new Vector2(mouseState.X, mouseState.Y), speed, shotgunBullet, barrelTip, _graphics, gravity);
+                            this.Components.Add(shotgun);
+                            
+                        }
+                        pasTime = time + shotgunFR;
+                        
+
                     }                   
                     
 
                 }
             }
             if (weapon ==5) {
+                
                 if (mouseState.X < defpoint.X) {
-                    _spriteBatch.Draw(shotgunBarrel, defpoint, null, Color.White, rotate, new Vector2(0, 0), 0.07f, SpriteEffects.FlipVertically, 0);
+                    _spriteBatch.Draw(shotgunBarrel, defpoint, null, Color.White, rotate, new Vector2(0, shotgunBarrel.Height / 2f), 0.07f, SpriteEffects.FlipVertically, 0);
                 }
                 else
                 {
-                    _spriteBatch.Draw(shotgunBarrel, defpoint, null, Color.White, rotate, new Vector2(0, 0), 0.07f, SpriteEffects.None, 0);
+                    _spriteBatch.Draw(shotgunBarrel, defpoint, null, Color.White, rotate, new Vector2(0,shotgunBarrel.Height/2f), 0.07f, SpriteEffects.None, 0);
 
                 }
             }
@@ -213,10 +221,8 @@ namespace finalcore
             }
             _spriteBatch.DrawString(defont, basetext, new Vector2(_graphics.PreferredBackBufferWidth/2 - (defont.MeasureString(basetext).X/2), (_graphics.PreferredBackBufferHeight) - defont.MeasureString(basetext).Y), Color.Black);
             _spriteBatch.DrawString(defont, weapon.ToString(), new Vector2(_graphics.PreferredBackBufferWidth/2,50), Color.Black);
-            _spriteBatch.DrawString(defont, ".", defpoint, Color.Black);
+            /*_spriteBatch.DrawString(defont, "*", defpoint, Color.Black);*/
             _spriteBatch.End();
-            // TODO: Add your drawing code here
-
             base.Draw(gameTime);
         }
     }

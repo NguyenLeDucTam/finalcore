@@ -147,9 +147,10 @@ namespace finalcore
                 soManyBool = true;
             }
             spriteBatch.Begin();
+            Vector2 origin = new Vector2(tex.Width / 2, tex.Height / 2);
             if ((defpoint.X <= list[2] || defpoint.Y <= list[1]) && defpoint!=center)
             {
-                spriteBatch.Draw(tex, defpoint, null, Color.White, rotate, new Vector2(0, 0), 0.3f, SpriteEffects.None, 0);
+                spriteBatch.Draw(tex, defpoint, null, Color.White, rotate,new Vector2(0,0), 0.3f, SpriteEffects.None, 0);
                 
             }
             if ((defpoint.Y >= graphic.PreferredBackBufferHeight)&& played==false)

@@ -71,7 +71,7 @@ namespace finalcore
 
                     defpoint += new Vector2(-Math.Abs(final.X), final.Y + (gravity * milisec)) * milisec;
                 }
-                gravity += 350f;
+                gravity += 375f;
                 if ((final.Y + (gravity * milisec) * milisec) > 0)
                 {
 
@@ -84,7 +84,7 @@ namespace finalcore
 
                 if ((defpoint.X <= list[2] || defpoint.Y <= list[1]) && defpoint != stage)
                 {
-                    spriteBatch.DrawString(defont, ".", defpoint, Color.Black, 0, new Vector2(0, 0), 1f, SpriteEffects.None, 0);
+                    spriteBatch.DrawString(defont, ".", defpoint, Color.Black, 0, new Vector2(defont.MeasureString(".").X/2, ".".Length / 2f), 1f, SpriteEffects.None, 0);
                 }
                 
             }

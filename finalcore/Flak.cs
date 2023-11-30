@@ -79,14 +79,24 @@ namespace finalcore
             spriteBatch.Begin();
             Rectangle bullet = new Rectangle((int)defpoint.X,(int)defpoint.Y,1,1);
             Rectangle target = new Rectangle((int)(position.X-25), (int)(position.Y-25), 50,50);
+            Vector2 origin = new Vector2(tex.Width/2, tex.Height/2);
             if (bullet.Intersects(target) ==false && passed==false && defpoint != stage)
             {
-                spriteBatch.Draw(tex, new Vector2( defpoint.X,defpoint.Y), null, Color.White, rotate, new Vector2(0, 0), 0.5f, SpriteEffects.None, 0);
+                if (position.X < stage.X)
+                {
+                    spriteBatch.Draw(tex, new Vector2(defpoint.X, defpoint.Y), null, Color.White, rotate, origin, 0.1f, SpriteEffects.None, 0);
+
+                }
+                else
+                {
+                    spriteBatch.Draw(tex, new Vector2(defpoint.X, defpoint.Y), null, Color.White, rotate, origin, 0.1f, SpriteEffects.FlipVertically, 0);
+
+                }
             }
             
             else if (bullet.Intersects(target))
             {
-                exp.Play();
+                exp.Play(0.1f, 0f,0f);
                 passed = true;
             }
             else if (passed==true && stop == true)

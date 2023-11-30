@@ -158,6 +158,18 @@
 /processorParam:Quality=Best
 /build:RimWorld by Ludeon Studios 2023-11-17 23-03-44.wav
 
+#begin Sequence 01_1.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sequence 01_1.wav
+
+#begin Sequence 01.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sequence 01.wav
+
 #begin Smoke45Frames.png
 /importer:TextureImporter
 /processor:TextureProcessor
